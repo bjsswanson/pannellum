@@ -527,8 +527,7 @@ function onImageLoad() {
             container.addEventListener('blur', clearKeys, false);
         }
         document.addEventListener('mouseleave', onDocumentMouseUp, false);
-        if (document.documentElement.style.pointerAction === '' &&
-            document.documentElement.style.touchAction === '') {
+        if (window.PointerEvent && !window.TouchEvent) {
             dragFix.addEventListener('pointerdown', onDocumentPointerDown, false);
             dragFix.addEventListener('pointermove', onDocumentPointerMove, false);
             dragFix.addEventListener('pointerup', onDocumentPointerUp, false);

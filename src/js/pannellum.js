@@ -500,9 +500,16 @@ function onImageLoad() {
     // Only add event listeners once
     if (!listenersAdded) {
         listenersAdded = true;
-        dragFix.addEventListener('mousedown', onDocumentMouseDown, false);
-        document.addEventListener('mousemove', onDocumentMouseMove, false);
-        document.addEventListener('mouseup', onDocumentMouseUp, false);
+        if(window.PointerEvent && !window.TouchEvent){
+            dragFix.addEventListener('pointerdown', onDocumentMouseDown, false);
+            document.addEventListener('pointermove', onDocumentMouseMove, false);
+            document.addEventListener('pointerup', onDocumentMouseUp, false);
+        } else {
+            dragFix.addEventListener('mousedown', onDocumentMouseDown, false);
+            document.addEventListener('mousemove', onDocumentMouseMove, false);
+            document.addEventListener('mouseup', onDocumentMouseUp, false);
+        }
+
         if (config.mouseZoom) {
             uiContainer.addEventListener('mousewheel', onDocumentMouseWheel, false);
             uiContainer.addEventListener('DOMMouseScroll', onDocumentMouseWheel, false);
@@ -527,7 +534,8 @@ function onImageLoad() {
             container.addEventListener('blur', clearKeys, false);
         }
         document.addEventListener('mouseleave', onDocumentMouseUp, false);
-        if (window.PointerEvent && !window.TouchEvent) {
+        if (document.documentElement.style.pointerAction === '' &&
+            document.documentElement.style.touchAction === '') {
             dragFix.addEventListener('pointerdown', onDocumentPointerDown, false);
             dragFix.addEventListener('pointermove', onDocumentPointerMove, false);
             dragFix.addEventListener('pointerup', onDocumentPointerUp, false);
